@@ -1,16 +1,6 @@
-# docker-pyrosetta
+# docker-miniGPT
 
-This repo has `Dockerfile` to build docker images of pyrosetta. You can find 
-https://hub.docker.com/r/partrita/pyrosetta page to detail of docker images.
+[miniGPT](https://github.com/karpathy/minGPT) is A PyTorch re-implementation of GPT training. minGPT tries to be small, clean, interpretable and educational, as most of the currently available ones are a bit sprawling. GPT is not a complicated model and this implementation is appropriately about 300 lines of code, including boilerplate and a totally unnecessary custom causal self-attention module. Anyway, all that's going on is that a sequence of indices goes into a sequence of transformer blocks, and a probability distribution of the next index comes out. The rest of the complexity is just being clever with batching (both across examples and over sequence length) so that training is efficient.
 
-# PyRosetta
+This repo has `Dockerfile` to build docker images of miniGPT.
 
-[PyRosetta](http://www.pyrosetta.org/) is an interactive Python-based interface to the powerful Rosetta molecular modeling suite. It enables users to design their own custom molecular modeling algorithms using Rosetta sampling methods and energy functions.
-
-PyRosetta was created at Johns Hopkins University by Jeffrey J. Gray, Sergey Lyskov, and the PyRosetta Team. 
-
-## TODO
-
-- [ ] Find the way check pyrosetta build number.
-- [ ] remove some sensitive information, like password and ID.
-- [x] Change to use conda command

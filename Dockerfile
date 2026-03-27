@@ -13,10 +13,15 @@ WORKDIR /home/jovyan/
 
 # Clone the minGPT repository directly into the container.
 # This makes the Docker build self-contained and not reliant on local files.
-RUN git clone https://github.com/karpathy/minGPT.git
+# Checking out a specific commit for security and reproducibility
+RUN git clone https://github.com/karpathy/minGPT.git && \
+    cd minGPT && \
+    git checkout 4050db60409b5bbaaa3302cee1e49847fc145c65
 
 # Download the required data file for the play_char.ipynb notebook.
-RUN wget https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt -P /home/jovyan/minGPT/
+# Adding sha256sum check for data integrity
+RUN wget -q https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt -O /home/jovyan/minGPT/input.txt && \
+    echo "86c4e6aa9db7c042ec79f339dcb96d42b0075e16b8fc2e86bf0ca57e2dc565ed  /home/jovyan/minGPT/input.txt" | sha256sum -c -
 
 # Set the working directory to the cloned repo.
 WORKDIR /home/jovyan/minGPT

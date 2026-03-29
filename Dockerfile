@@ -1,6 +1,7 @@
 # Use a specific version of the Jupyter notebook stack for reproducibility.
 # Images are now hosted on quay.io
-FROM quay.io/jupyter/minimal-notebook:python-3.11.6
+# Pinned to specific sha256 digest to prevent supply chain attacks
+FROM quay.io/jupyter/minimal-notebook@sha256:25ad099a1eafc1bcdd0c0868f4d4f93264a1c1885bdee0a4c58840ed108cfa24
 
 # Install PyTorch, torchvision, and other dependencies using conda.
 # Using a specific CUDA version for consistency.

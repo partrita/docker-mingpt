@@ -26,7 +26,8 @@ WORKDIR /home/jovyan/minGPT
 
 # Download the required data file for the play_char.ipynb notebook.
 # Adding sha256sum check for data integrity
-RUN wget -q https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt -O /home/jovyan/minGPT/input.txt && \
+# 🛡️ Sentinel: Added timeout to external API call to prevent build-time DoS (hanging connections)
+RUN wget -q --timeout=15 https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt -O /home/jovyan/minGPT/input.txt && \
     echo "86c4e6aa9db7c042ec79f339dcb96d42b0075e16b8fc2e86bf0ca57e2dc565ed  /home/jovyan/minGPT/input.txt" | sha256sum -c -
 
 # The container will start JupyterLab by default.

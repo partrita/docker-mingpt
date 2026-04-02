@@ -15,9 +15,10 @@ WORKDIR /home/jovyan/
 # Clone the minGPT repository directly into the container.
 # This makes the Docker build self-contained and not reliant on local files.
 # Checking out a specific commit for security and reproducibility
+# 🛡️ Sentinel: Disable git terminal prompts and add timeout to prevent build-time DoS if repo is inaccessible
 # Set the SHELL option -o pipefail before RUN with a pipe in it
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN git clone https://github.com/karpathy/minGPT.git && \
+RUN GIT_TERMINAL_PROMPT=0 timeout 300 git clone https://github.com/karpathy/minGPT.git && \
     cd minGPT && \
     git checkout 4050db60409b5bbaaa3302cee1e49847fc145c65
 

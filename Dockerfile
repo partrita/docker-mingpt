@@ -30,6 +30,10 @@ WORKDIR /home/jovyan/minGPT
 RUN wget -q --timeout=15 https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt -O /home/jovyan/minGPT/input.txt && \
     echo "86c4e6aa9db7c042ec79f339dcb96d42b0075e16b8fc2e86bf0ca57e2dc565ed  /home/jovyan/minGPT/input.txt" | sha256sum -c -
 
+# 🛡️ Sentinel: Added HEALTHCHECK to detect compromised or hanging container states
+HEALTHCHECK --interval=5m --timeout=3s \
+  CMD wget --quiet --tries=1 --spider http://localhost:8888/ || exit 1
+
 # The container will start JupyterLab by default.
 # To build this image, run:
 # docker build -t docker-mingpt .

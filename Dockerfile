@@ -17,9 +17,9 @@ WORKDIR /home/jovyan/
 # Checking out a specific commit for security and reproducibility
 # Set the SHELL option -o pipefail before RUN with a pipe in it
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN git clone https://github.com/karpathy/minGPT.git && \
-    cd minGPT && \
-    git checkout 4050db60409b5bbaaa3302cee1e49847fc145c65
+RUN timeout 300 git clone https://github.com/karpathy/minGPT.git && \
+    git -C minGPT checkout 4050db60409b5bbaaa3302cee1e49847fc145c65 && \
+    rm -rf minGPT/.git
 
 # Set the working directory to the cloned repo.
 WORKDIR /home/jovyan/minGPT

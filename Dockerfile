@@ -5,7 +5,10 @@ FROM quay.io/jupyter/minimal-notebook:python-3.11.6@sha256:16a757e257d7d45f2e3a4
 
 # Install PyTorch, torchvision, and other dependencies using conda.
 # Using a specific CUDA version for consistency.
-RUN conda install --yes pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia && \
+# 🛡️ Sentinel: Added network timeouts to prevent build-time DoS
+RUN conda config --set remote_read_timeout_secs 60 && \
+    conda config --set remote_connect_timeout_secs 15 && \
+    conda install --yes pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia && \
     conda install --yes numpy matplotlib -c conda-forge && \
     conda clean -afy
 
@@ -16,8 +19,9 @@ WORKDIR /home/jovyan/
 # This makes the Docker build self-contained and not reliant on local files.
 # Checking out a specific commit for security and reproducibility
 # Set the SHELL option -o pipefail before RUN with a pipe in it
+# 🛡️ Sentinel: Added timeout to git clone to prevent build-time DoS
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN git clone https://github.com/karpathy/minGPT.git && \
+RUN timeout 300 git clone https://github.com/karpathy/minGPT.git && \
     cd minGPT && \
     git checkout 4050db60409b5bbaaa3302cee1e49847fc145c65
 

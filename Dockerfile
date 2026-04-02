@@ -37,3 +37,7 @@ RUN wget -q --timeout=15 https://raw.githubusercontent.com/karpathy/char-rnn/mas
 # To run the container:
 # docker run -p 8888:8888 docker-mingpt
 # Then open the URL printed in the console in your browser.
+
+# 🛡️ Sentinel: Added healthcheck to detect hung or crashed Jupyter server
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget -qO- http://localhost:8888 || exit 1

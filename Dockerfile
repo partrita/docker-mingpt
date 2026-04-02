@@ -30,6 +30,11 @@ WORKDIR /home/jovyan/minGPT
 RUN wget -q --timeout=15 https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt -O /home/jovyan/minGPT/input.txt && \
     echo "86c4e6aa9db7c042ec79f339dcb96d42b0075e16b8fc2e86bf0ca57e2dc565ed  /home/jovyan/minGPT/input.txt" | sha256sum -c -
 
+# 🛡️ Sentinel: Explicitly drop privileges to the non-root user to enforce defense-in-depth.
+# This prevents the container from accidentally running as root if upstream base images
+# or earlier build steps are modified to use the root user.
+USER $NB_UID
+
 # The container will start JupyterLab by default.
 # To build this image, run:
 # docker build -t docker-mingpt .

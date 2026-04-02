@@ -35,5 +35,5 @@ RUN wget -q --timeout=15 https://raw.githubusercontent.com/karpathy/char-rnn/mas
 # docker build -t docker-mingpt .
 #
 # To run the container:
-# docker run -p 8888:8888 docker-mingpt
+# docker run -p 127.0.0.1:8888:8888 docker-mingpt
 # Then open the URL printed in the console in your browser.

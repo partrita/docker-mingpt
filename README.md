@@ -26,7 +26,7 @@ docker build -t docker-mingpt .
 Once the image is built, you can run it as a container with this command:
 
 ```bash
-docker run -p 8888:8888 docker-mingpt
+docker run -p 127.0.0.1:8888:8888 docker-mingpt
 ```
 
 This command starts the JupyterLab server inside the container and maps port 8888 of the container to port 8888 on your local machine.

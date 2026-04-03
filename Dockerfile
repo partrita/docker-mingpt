@@ -42,3 +42,7 @@ HEALTHCHECK --interval=5m --timeout=3s \
 # To run the container:
 # docker run -p 127.0.0.1:8888:8888 docker-mingpt
 # Then open the URL printed in the console in your browser.
+
+# 🛡️ Sentinel: Added healthcheck to detect hung or crashed Jupyter server
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD wget -qO- http://localhost:8888 || exit 1

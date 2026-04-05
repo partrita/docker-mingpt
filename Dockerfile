@@ -43,5 +43,5 @@ RUN wget -q --timeout=15 https://raw.githubusercontent.com/karpathy/char-rnn/mas
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD wget -qO- http://localhost:8888 || exit 1
 
-# 🛡️ Sentinel: Explicitly switch back to the notebook user to prevent privilege escalation
+# 🛡️ Sentinel: Drop privileges correctly
 USER $NB_UID

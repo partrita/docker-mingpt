@@ -10,3 +10,8 @@
 **Vulnerability:** The documentation instructed users to run the container using `docker run -p 8888:8888`. This binds the port to `0.0.0.0`, exposing the JupyterLab server (which allows remote code execution) to the entire local network, bypassing host firewalls like UFW. This poses a direct risk to the host infrastructure.
 **Learning:** Docker bypasses UFW by default. Binding to `0.0.0.0` is dangerous for development servers, especially those offering remote code execution like JupyterLab.
 **Prevention:** Always explicitly bind to localhost (`127.0.0.1`) when running containers intended for local access only, e.g., `docker run -p 127.0.0.1:8888:8888`.
+
+## 2024-05-24 - [Security Theater in Build Timeouts]
+**Vulnerability:** Adding hardcoded timeouts to heavy build steps (like `git clone`) in a Dockerfile as a preventative measure against DoS or hanging builds.
+**Learning:** Hardcoding timeouts for large operations in a Dockerfile introduces build flakiness and is often considered "security theater." CI/CD systems and build environments natively handle overall task and job timeouts more robustly. Attempting to manage this at the individual command level within a Dockerfile is an anti-pattern unless the command is known to hang indefinitely by design.
+**Prevention:** Rely on the native timeout mechanisms of the build environment or CI/CD runner rather than implementing brittle, hardcoded timeouts within the Dockerfile itself.

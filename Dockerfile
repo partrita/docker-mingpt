@@ -20,7 +20,8 @@ WORKDIR /home/jovyan/
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN GIT_TERMINAL_PROMPT=0 git clone https://github.com/karpathy/minGPT.git && \
     cd minGPT && \
-    git checkout 4050db60409b5bbaaa3302cee1e49847fc145c65
+    git checkout 4050db60409b5bbaaa3302cee1e49847fc145c65 && \
+    sed -i 's/torch.load('\''cifar10_model.pt'\'')/torch.load('\''cifar10_model.pt'\'', weights_only=True)/g' play_image.ipynb
 
 # Set the working directory to the cloned repo.
 WORKDIR /home/jovyan/minGPT

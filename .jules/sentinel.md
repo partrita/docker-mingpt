@@ -15,3 +15,8 @@
 **Vulnerability:** Adding hardcoded timeouts to heavy build steps (like `git clone`) in a Dockerfile as a preventative measure against DoS or hanging builds.
 **Learning:** Hardcoding timeouts for large operations in a Dockerfile introduces build flakiness and is often considered "security theater." CI/CD systems and build environments natively handle overall task and job timeouts more robustly. Attempting to manage this at the individual command level within a Dockerfile is an anti-pattern unless the command is known to hang indefinitely by design.
 **Prevention:** Rely on the native timeout mechanisms of the build environment or CI/CD runner rather than implementing brittle, hardcoded timeouts within the Dockerfile itself.
+
+## 2024-05-24 - [Insecure Deserialization in PyTorch Load]
+**Vulnerability:** The codebase used `torch.load('cifar10_model.pt')` to load a pre-trained model checkpoint. Without `weights_only=True`, `torch.load` relies on `pickle` for deserialization, which can execute arbitrary code if the loaded file has been tampered with or replaced by a malicious user.
+**Learning:** Insecure deserialization is a critical vulnerability that is easy to introduce when loading model weights. Since PyTorch uses `pickle` internally for state dicts and full models, any external file loaded with `torch.load` should be considered untrusted unless properly validated. Even in local Jupyter notebooks, untrusted checkpoints can lead to host compromise.
+**Prevention:** Always set `weights_only=True` when using `torch.load()` to load model checkpoints containing `state_dict`s. Alternatively, use safer serialization formats like safetensors.

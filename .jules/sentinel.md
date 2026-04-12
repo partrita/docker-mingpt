@@ -20,3 +20,8 @@
 **Vulnerability:** The codebase used `torch.load('cifar10_model.pt')` to load a pre-trained model checkpoint. Without `weights_only=True`, `torch.load` relies on `pickle` for deserialization, which can execute arbitrary code if the loaded file has been tampered with or replaced by a malicious user.
 **Learning:** Insecure deserialization is a critical vulnerability that is easy to introduce when loading model weights. Since PyTorch uses `pickle` internally for state dicts and full models, any external file loaded with `torch.load` should be considered untrusted unless properly validated. Even in local Jupyter notebooks, untrusted checkpoints can lead to host compromise.
 **Prevention:** Always set `weights_only=True` when using `torch.load()` to load model checkpoints containing `state_dict`s. Alternatively, use safer serialization formats like safetensors.
+
+## 2024-05-24 - [Unnecessary .git Directory in Docker Image]
+**Vulnerability:** The Dockerfile cloned a repository and did not remove the `.git` directory afterwards. This exposes the entire version history and potentially sensitive configurations or credentials that might be in the git history, unnecessarily increasing the image's attack surface and size.
+**Learning:** Even when checking out a specific commit, the `.git` directory contains the complete history and configuration. Leaving it in a built container image is poor security practice as it could be compromised.
+**Prevention:** Always remove the `.git` directory immediately after a `git clone` or `git checkout` command in the same `RUN` step in the Dockerfile using `rm -rf .git`.

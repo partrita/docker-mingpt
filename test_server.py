@@ -7,5 +7,5 @@ class RedirectHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Location', '/lab')
         self.end_headers()
 
-with socketserver.TCPServer(("", 8000), RedirectHandler) as httpd:
+with socketserver.TCPServer(("127.0.0.1", 8000), RedirectHandler) as httpd:
     httpd.serve_forever()

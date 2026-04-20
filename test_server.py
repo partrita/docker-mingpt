@@ -3,6 +3,9 @@ import socketserver
 import http
 
 class RedirectHandler(http.server.SimpleHTTPRequestHandler):
+    server_version = "SecureServer"
+    sys_version = ""
+
     def end_headers(self):
         self.send_header('X-Content-Type-Options', 'nosniff')
         self.send_header('X-Frame-Options', 'SAMEORIGIN')
@@ -10,6 +13,10 @@ class RedirectHandler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
     def do_GET(self):
+        if '/.' in self.path:
+            self.send_error(http.HTTPStatus.FORBIDDEN, "Access to hidden files is forbidden")
+            return
+
         if self.path == '/':
             self.send_response(302)
             self.send_header('Location', '/lab')

@@ -25,3 +25,8 @@
 **Vulnerability:** The Dockerfile cloned a repository and did not remove the `.git` directory afterwards. This exposes the entire version history and potentially sensitive configurations or credentials that might be in the git history, unnecessarily increasing the image's attack surface and size.
 **Learning:** Even when checking out a specific commit, the `.git` directory contains the complete history and configuration. Leaving it in a built container image is poor security practice as it could be compromised.
 **Prevention:** Always remove the `.git` directory immediately after a `git clone` or `git checkout` command in the same `RUN` step in the Dockerfile using `rm -rf .git`.
+
+## 2026-04-20 - [Information Disclosure via HTTP Server]
+**Vulnerability:** The test_server.py script used Python's built-in HTTP server which, by default, serves any file in the directory including hidden files like `.git/config` and `.env`. It also leaked the Python server version in the `Server` header.
+**Learning:** Default static file servers lack the necessary configuration to prevent serving sensitive dotfiles and often leak underlying technology stack details.
+**Prevention:** Explicitly block access to paths containing `/.` by returning a 403 Forbidden error in custom request handlers, and override `server_version` and `sys_version` attributes to obscure the server implementation details.

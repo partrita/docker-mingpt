@@ -1,5 +1,6 @@
 import http.server
 import socketserver
+import http
 
 class RedirectHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
@@ -15,6 +16,10 @@ class RedirectHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
         else:
             super().do_GET()
+
+    def list_directory(self, path):
+        self.send_error(http.HTTPStatus.FORBIDDEN, "Directory listing is disabled")
+        return None
 
 with socketserver.TCPServer(("127.0.0.1", 8000), RedirectHandler) as httpd:
     httpd.serve_forever()
